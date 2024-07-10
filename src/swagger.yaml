@@ -1,0 +1,200 @@
+openapi: '3.0.2'
+info:
+  title: API 
+  version: '1.0'
+servers:
+  - url: http://localhost:5000
+paths:
+  /user/api/v1/userlogin:  
+    post:
+      summary: Login to the system
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUserRequest'
+      responses:
+        '200':
+          description: Login Success
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/loginUserResponse'
+        '401':
+          description: Login Failed
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/loginUserFailedResponse'
+  /user/api/v1/getRASPublicKey:
+    get:
+      summary: get RSA public key for encryption
+      tags:
+        - user
+      responses:
+        '200':
+          description: Get Public Key Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRSAPublicKeyResponse'
+  /workExperiencePost/api/v1/getWorkExperiencePostList:
+    get:
+      summary: Get Work Experience post
+      tags:
+        - Work Experience post
+      responses:
+        '200':
+          description: Get Work Experience post Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/getWorkExperiencePostResponse'
+      
+components:
+  schemas:
+    loginUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: user
+        password:
+          type: string
+          example: P@ssw0rd
+      # Both properties are required
+      required:  
+        - username
+        - password
+  
+    loginUserResponse:
+      type: object
+      properties:
+        data:
+          type: object          
+          properties:
+            userProfile:
+              type: object
+              properties:
+                id:
+                  type: number
+                  example: 1
+                username:
+                  type: string
+                  example: user
+                displayName:
+                  type: string
+                  example: test user
+                token:
+                  type: string
+                  example: pAydSskTy1fTaAiv3Jng
+        message:
+          type: string
+          example: Success
+        status:
+          type: number
+          example: 200
+
+    loginUserFailedResponse:
+      type: object
+      properties:
+        data:
+          type: object 
+          example: {}         
+          properties:
+            userProfile:
+              type: object
+              properties:
+                id:
+                  type: number
+                  example: 1
+                username:
+                  type: string
+                  example: user
+                displayName:
+                  type: string
+                  example: test user
+                token:
+                  type: string
+                  example: pAydSskTy1fTaAiv3Jng
+        message:
+          type: string
+          example: Login Failed
+        status:
+          type: number
+          example: 401
+
+    getRSAPublicKeyResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            publicKey:
+              type: string              
+              example: -----BEGIN PUBLIC KEY-----
+                        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCac/oRnUwoaLMM/pcxbdEUuW/B
+                        eux8Gx6M0UethmL10yU9XV2Wq6jm7f3xAWdwzsoL0xrpupD84MXWuMTKUjdxpw6z
+                        0ItPdPpDqqOfYtFOG9xohvis4kWuVReyStxs9fmSFEAkEWoUWeTC+xP7xnsUQKcI
+                        TX+P9GG+Pe+LwI2b6QIDAQAB
+                        -----END PUBLIC KEY-----
+        message:
+          type: string
+          example: Success
+        status:
+          type: number
+          example: 200
+
+    getWorkExperiencePostResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            workExperiencePostList:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: number              
+                    example: 1
+                  workExperienceCompanyId:
+                    type: number
+                    example: 2
+                  dateFrom:
+                    type: string
+                    format: date
+                    example: 2022-02-23
+                  dateTo:
+                    type: string
+                    format: date
+                    example: 2023-01-22
+                  companyName:
+                    type: string
+                    example: Company A
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dateFrom:
+                          type: string
+                          format: date
+                          example: 2022-02-23
+                        dateTo:
+                          type: string
+                          format: date
+                          example: 2022-11-23
+                        post:
+                          type: string
+                          example: Programmer
+        message:
+          type: string
+          example: Success
+        status:
+          type: number
+          example: 200
