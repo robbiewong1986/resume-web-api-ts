@@ -1,16 +1,15 @@
 import { DataTypes, Optional, Model } from "sequelize"
 import { sequelizeConfig } from '../server'
 
-
 class company extends Model {
     public id!: number
-    public companyName!: string;
+    public name!: string;
     public mongodbImageId!: string;
     public isDeleted!: boolean;
 
     // timestamps!
-    public createdAt!: Date;
-    public updatedAt!: Date;
+    public createdDt!: Date;
+    public updatedDt!: Date;
 }
 
 export const Company = company.init({
@@ -20,8 +19,8 @@ export const Company = company.init({
         primaryKey: true,
         autoIncrement: true
     },
-    companyName: {
-        field: 'company_name',
+    name: {
+        field: 'name',
         type: DataTypes.STRING,
         allowNull: false,
     },

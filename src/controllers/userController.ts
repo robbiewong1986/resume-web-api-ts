@@ -13,8 +13,8 @@ const userLogin = async (req: Request<{}, {}, UserLoginRequest>, res: Response<U
     try {
         const [result, message] = await processLogin(req.body.username, req.body.password)
 
-        if (result.userProfile.id) {
-            const token = jwt.sign({ userId: result.userProfile.id, token: result.userProfile.token }, String(process.env.JWT_SECRET_WORD), {
+        if (result.id) {
+            const token = jwt.sign({ userId: result.id, token: result.token }, String(process.env.JWT_SECRET_WORD), {
                 expiresIn: '5m',
             });
 
@@ -31,7 +31,7 @@ const userLogin = async (req: Request<{}, {}, UserLoginRequest>, res: Response<U
             //res.cookie("token", token)
             res.status(200).send({
                 data: {
-                    userProfile: result.userProfile,
+                    userProfile: result,
                 },
                 message: message,
                 status: 200,
@@ -152,7 +152,8 @@ const getRSAPublicKey = async (req: Request, res: Response<GetRSAPublicKeyRespon
 // }
 
 const checkToken = async (req: Request, res: Response, next: () => void) => {
-
+   
+    
     Log4js.logInfo(req.cookies.token)
     const cookieToken = req.cookies.token
 
@@ -247,6 +248,8 @@ const checkToken = async (req: Request, res: Response, next: () => void) => {
                 }
             }
         }
+    }else{
+        next()
     }
     // else if (!authheader) {
     //     Log4js.logInfo("No Auth Header")

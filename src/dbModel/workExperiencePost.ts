@@ -10,8 +10,8 @@ class workExperiencePost extends Model {
     //public isDeleted!: boolean;
 
     // timestamps!
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public readonly createdDt!: Date;
+    public readonly updatedDt!: Date;
 }
 
 

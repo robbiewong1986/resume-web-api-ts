@@ -1,52 +1,42 @@
 import { DataTypes, Optional, Model } from "sequelize"
 import { sequelizeConfig } from '../server'
 
-class WorkExperienceCompany  {
+class project extends Model {
     public id!: number
-    public companyId!: number;
-    public displayName!: string;
-    public dateFrom!: Date;
-    public dateTo?: Date;
-
+    public workExperienceCompanyId!: number
+    public name!: string
+    public mongoDetailId!: string
+    public isDeleted!: boolean
+    // timestamps!F
+    public createdDt!: Date
+    public updatedDt!: Date  
 }
 
-class profile extends Model {
-    public id!: number
-    public type!: string;
-    public content!: string;
-    public isVisible!: boolean;
-    public seqNo!: number
-    // timestamps!
-    public createdDt!: Date;
-    public updatedDt!: Date;
-    public workExperienceCompany? : WorkExperienceCompany[];
-}
-
-export const Profile = profile.init({
+export const Project = project.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
     },
-    type: {
-        field: 'type',
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    content: {
-        field: 'content',
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    isVisible: {
-        field: 'is_visible',
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-    },
-    seqNo: {
-        field: 'seq_no',
+    workExperienceCompanyId: {
+        field: 'work_experience_company_id',
         type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    name: {
+        field: 'name',
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    mongoDetailId: {
+        field: 'mongo_detail_id',
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    isDeleted: {
+        field: 'is_deleted',
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
     createdDt: {
@@ -67,7 +57,6 @@ export const Profile = profile.init({
     freezeTableName: true,
     // If don't want updatedAt
     updatedAt: false,
-    deletedAt: false, 
-
+    deletedAt: false
 });
 

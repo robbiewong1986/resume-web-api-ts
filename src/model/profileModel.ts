@@ -1,4 +1,4 @@
-export interface GetProfileModel {
+export interface ProfileData {
     id: number
     type: number
     content: number

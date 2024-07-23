@@ -1,23 +1,5 @@
-//import Sequelize from "sequelize-typescript"
 import { DataTypes, Optional, Model } from "sequelize"
 import { sequelizeConfig } from '../server'
-
-//const sequelize = require("../server").sequelize;
-
-// interface UserAttributes {
-//     id: number;
-//     username: string;
-//     displayName: string;
-//     password: string;
-//     token?: string;
-//     tokenCreatedDt?: Date;
-//     lastLoginDt?: Date;
-//     isDeleted: boolean;
-// }
-
-// export interface UserInput extends Optional<UserAttributes, 'id' | 'token' | 'tokenCreatedDt'> { }
-// export interface UserOuput extends Required<UserAttributes> { }
-
 
 class users extends Model {
     public id!: number
@@ -31,8 +13,8 @@ class users extends Model {
     public isDeleted!: boolean;
 
     // timestamps!
-    public createdAt!: Date;
-    public updatedAt!: Date;    
+    public createdDt!: Date;
+    public updatedDt!: Date;
 }
 
 
@@ -70,7 +52,7 @@ export const Users = users.init({
         type: DataTypes.DATE,
         allowNull: true,
     },
-    userExpiryDt:{
+    userExpiryDt: {
         field: 'user_expiry_dt',
         type: DataTypes.DATE,
         allowNull: true,

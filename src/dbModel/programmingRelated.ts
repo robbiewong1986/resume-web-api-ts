@@ -1,52 +1,49 @@
 import { DataTypes, Optional, Model } from "sequelize"
 import { sequelizeConfig } from '../server'
 
-class WorkExperienceCompany  {
-    public id!: number
-    public companyId!: number;
-    public displayName!: string;
-    public dateFrom!: Date;
-    public dateTo?: Date;
 
-}
-
-class profile extends Model {
+class programmingRelated extends Model {
     public id!: number
-    public type!: string;
-    public content!: string;
-    public isVisible!: boolean;
-    public seqNo!: number
+    public name!: string
+    public isFrontend!: boolean
+    public isBackend!: boolean
+    public isDatabase!: boolean
+    public isDeleted!: boolean
     // timestamps!
-    public createdDt!: Date;
-    public updatedDt!: Date;
-    public workExperienceCompany? : WorkExperienceCompany[];
+    public createdDt!: Date
+    public updatedDt!: Date
 }
 
-export const Profile = profile.init({
+export const ProgrammingRelated = programmingRelated.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
     },
-    type: {
-        field: 'type',
+    name: {
+        field: 'name',
         type: DataTypes.STRING,
         allowNull: false,
     },
-    content: {
-        field: 'content',
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    isVisible: {
-        field: 'is_visible',
+    isBackend: {
+        field: 'is_backend',
         type: DataTypes.BOOLEAN,
         allowNull: false,
     },
-    seqNo: {
-        field: 'seq_no',
-        type: DataTypes.INTEGER,
+    isFrontend: {
+        field: 'is_frontend',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    },
+    isDatabase: {
+        field: 'is_database',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    },
+    isDeleted: {
+        field: 'is_deleted',
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
     createdDt: {
@@ -67,7 +64,7 @@ export const Profile = profile.init({
     freezeTableName: true,
     // If don't want updatedAt
     updatedAt: false,
-    deletedAt: false, 
-
+    deletedAt: false,
+    tableName: "programming_related"
 });
 

@@ -2,13 +2,12 @@ import Log4js from '../log4js'
 import { Users } from '../dbModel/users'
 import { UserProfile } from '../model/userModel'
 
+
 const { decryptData, readFile, aesEncrypt, randomString } = require('../util');
 
-interface processLoginResponse {
-    userProfile: UserProfile
-}
 
 export const processLogout = async (userId: number): Promise<boolean> => {
+
     const result = await Users.update(
         {
             token: "",
@@ -17,7 +16,6 @@ export const processLogout = async (userId: number): Promise<boolean> => {
         {
             where: {
                 id: userId,
-
             }
         }
     ).then(result => result[0])
@@ -34,7 +32,7 @@ export const processLogout = async (userId: number): Promise<boolean> => {
 }
 
 
-export const processLogin = async (username: string, password: string): Promise<[processLoginResponse, string]> => {
+export const processLogin = async (username: string, password: string): Promise<[UserProfile, string]> => {
 
     const privatekey = readFile(process.env.RSA_PRIVATE_KEY_FILE_PATH)
     const decryptedPassword = decryptData(privatekey, password)
@@ -66,12 +64,8 @@ export const processLogin = async (username: string, password: string): Promise<
 
         if (loginUser.userExpiryDate && loginUser.userExpiryDate < new Date()) {
 
-            return [{
-                userProfile: {}
-            }, "User is expired"]
+            return [{}, "User is expired"]
         }
-
-
 
         // Update Token 
         const token = randomString(20)
@@ -100,12 +94,10 @@ export const processLogin = async (username: string, password: string): Promise<
             }
         }).then((user) => {
             return {
-                userProfile: {
-                    id: user?.id,
-                    username: user?.username,
-                    displayName: user?.displayName,
-                    token: user?.token
-                }
+                id: user?.id,
+                username: user?.username,
+                displayName: user?.displayName,
+                token: user?.token
             }
         }).catch((err) => {
             console.error('Something went wrong:', err);
@@ -114,18 +106,15 @@ export const processLogin = async (username: string, password: string): Promise<
 
         return [loginUserProfile, "Success"]
     } else {
-        return [{
-            userProfile: {}
-        }, "Authentication failed"]
+        return [{}, "Authentication failed"]
     }
 }
-
 
 export const getUserTokenByUserId = async (userId: number) => {
     return await Users.findOne({
         where: {
             id: userId,
-            
+
         }
     }).then((user) => {
         if (user && user.id != 0)
@@ -142,7 +131,7 @@ export const getUserByUserId = async (userId: number) => {
     return await Users.findOne({
         where: {
             id: userId,
-            
+
         }
     }).then((user) => {
         if (user && user.id != 0)

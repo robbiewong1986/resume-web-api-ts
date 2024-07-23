@@ -12,8 +12,8 @@ class workExperienceCompany extends Model {
     //public isDeleted!: boolean;
 
     // timestamps!
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public readonly createdDt!: Date;
+    public readonly updatedDt!: Date;
 }
 
 export const WorkExperienceCompany = workExperienceCompany.init({
@@ -38,11 +38,11 @@ export const WorkExperienceCompany = workExperienceCompany.init({
         type: DataTypes.DATEONLY,
         allowNull: true,
     },
-    // isDeleted: {
-    //     field: 'is_deleted',
-    //     type: DataTypes.BOOLEAN,
-    //     allowNull: false,
-    // },
+    isDeleted: {
+        field: 'is_deleted',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    },
     createdDt: {
         field: 'created_dt',
         type: DataTypes.DATE,
@@ -63,8 +63,10 @@ export const WorkExperienceCompany = workExperienceCompany.init({
     updatedAt: false,
     deletedAt: false,
     sequelize: sequelizeConfig,
-    tableName: "Work_experience_company"
+    tableName: "work_experience_company"
 });
+
+
 
 // workExperienceCompany.hasMany(WorkExperiencePost , { as:'workExperiencePost', foreignKey:'work_experience_company_id' , sourceKey:'id' })
 // workExperienceCompany.belongsTo(Company , {as:'company' , targetKey:'id' , foreignKey :'company_id'})

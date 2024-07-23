@@ -1,24 +1,21 @@
-const { sleep } = require('../util')
-const { Op } = require('sequelize');
-const { workExperienceCompany } = require('../dbModel/workExperienceCompany');
-const Company = require('../dbModel/company').company;
-const WorkExperiencePost = require('../dbModel/workExperiencePost').workExperiencePost;
-import { GetWorkExperiencePostModel } from '../model/workExperiencePostModel'
+
+
+import { WorkExperienceCompany } from '../dbModel/workExperienceCompany';
+import { Company } from '../dbModel/company';
+import { WorkExperiencePost } from '../dbModel/workExperiencePost';
+import { WorkExperiencePostData } from '../model/workExperiencePostModel'
 
 import { companyImage } from '../mongoDBModel/companyImages'
 
-interface GetWorkExperiencePostList {
+interface GetWorkExperiencePostListResultType {
     id: number
     workExperienceCompanyId: number
     dateFrom: Date
     dateTo: Date
     post: string
-    //isDeleted: boolean
-    createdAt: Date
-    updatedAt: Date
     company:
     {
-        companyName: string,
+        name: string,
         mongodbImageId?: string
     }
     workExperiencePost: [
@@ -30,9 +27,9 @@ interface GetWorkExperiencePostList {
     ]
 }
 
-export const getWorkExperiencePostList = async (): Promise<GetWorkExperiencePostModel[]> => {
+export const getWorkExperiencePostList = async (): Promise<WorkExperiencePostData[]> => {
     //await sleep(5000)
-    let result = await workExperienceCompany.findAll({
+    let result = await WorkExperienceCompany.findAll({
         where: {
             //isDeleted: false,
         },
@@ -40,7 +37,7 @@ export const getWorkExperiencePostList = async (): Promise<GetWorkExperiencePost
             {
                 model: Company, as: 'company',
                 required: true,
-                attributes: ['companyName', 'mongodbImageId'],
+                attributes: ['name', 'mongodbImageId'],
                 where: {
                     isDeleted: false,
                 }
@@ -54,8 +51,8 @@ export const getWorkExperiencePostList = async (): Promise<GetWorkExperiencePost
                 }
             }
         ]
-    }).then((weps: GetWorkExperiencePostList[]) => {
-        return weps.map(wep => {
+    }).then((weps: any[]) => {
+        return (weps as GetWorkExperiencePostListResultType[]).map(wep => {
             return {
                 id: wep.id,
                 company: wep.company,
@@ -74,16 +71,15 @@ export const getWorkExperiencePostList = async (): Promise<GetWorkExperiencePost
         console.error('Something went wrong:', err);
         return err;
     });
-    
+
     // Get image from Mongo DB
     return await Promise.all(
         result.map(
-            async (res: GetWorkExperiencePostList) => {
-
+            async (res: GetWorkExperiencePostListResultType) => {
                 const image = await companyImage.findById(res.company.mongodbImageId)
                 return {
                     id: res.id,
-                    companyName: res.company.companyName,
+                    companyName: res.company.name,
                     details: res.workExperiencePost,
                     base64image: image ? "data:image/png;base64, " + image.data : image.data // if image is null 
                 }

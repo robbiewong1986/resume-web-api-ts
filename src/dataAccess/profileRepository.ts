@@ -1,10 +1,10 @@
-const { Profile } = require('../dbModel/profile');
-import { GetProfileModel } from '../model/profileModel'
+const Profile = require('../dbModel/profile').Profile;
+import { ProfileData } from '../model/profileModel'
 
-export const getProfile = async (): Promise<GetProfileModel[]> => {
+export const getProfile = async (): Promise<ProfileData[]> => {
     return await Profile.findAll({
         where: {},
-    }).then((profiles: GetProfileModel[]) => {
+    }).then((profiles: ProfileData[]) => {
         return profiles.map(profile => {
             return {
                 id: profile.id,

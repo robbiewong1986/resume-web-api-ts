@@ -1,7 +1,9 @@
 import { UserProfile } from './userModel'
-import { GetWorkExperiencePostModel } from './workExperiencePostModel'
-import { GetProfileModel } from './profileModel'
+import { WorkExperiencePostData } from './workExperiencePostModel'
+import { ProfileData } from './profileModel'
+import { ProjectData , ProgrammingRelatedData , CompanyData } from './projectModel'
 import { BaseResponse } from './commonModel'
+
 
 export interface UserLoginResponse extends BaseResponse {
     data?: {
@@ -21,16 +23,33 @@ export interface GetRSAPublicKeyResponse extends BaseResponse {
 
 export interface GetWorkExperiencePostListResponse extends BaseResponse {
     data?: {
-        workExperiencePostList: GetWorkExperiencePostModel[]
+        workExperiencePostList: WorkExperiencePostData[]
     }
 }
 
 export interface GetProfileResponse extends BaseResponse {
     data?: {
-        profileList: GetProfileModel[]
+        profileList: ProfileData[]
     }
 } 
 
+export interface GetProjectResponse extends BaseResponse{
+    data? :{
+        projectList:ProjectData[]
+    }
+}
+
+export interface GetProgramRelatedResponse extends BaseResponse{
+    data? :{
+        programRelatedList:ProgrammingRelatedData[]
+    }
+}
+
+export interface GetCompanyListResponse extends BaseResponse{
+    data? :{
+        companyList:CompanyData[]
+    }
+}
 
 
 
